@@ -1,3 +1,12 @@
+Run the API with
+```python
+docker-compose up --build
+```
+
+
+=================================
+
+
 **Status:** Archive (code is provided as-is, no updates expected)
 
 # gpt-2

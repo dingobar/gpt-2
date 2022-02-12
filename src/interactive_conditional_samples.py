@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 
-import fire
 import json
 import os
 import numpy as np
 import tensorflow as tf
 
-import model, sample, encoder
+from src import model, sample, encoder
 
 def interact_model(
+    raw_text: str,
     model_name='124M',
     seed=None,
     nsamples=1,
     batch_size=1,
-    length=None,
-    temperature=1,
+    length=40,
+    temperature=0.9,
     top_k=0,
     top_p=1,
     models_dir='models',
@@ -70,10 +70,6 @@ def interact_model(
         saver.restore(sess, ckpt)
 
         while True:
-            raw_text = input("Model prompt >>> ")
-            while not raw_text:
-                print('Prompt should not be empty!')
-                raw_text = input("Model prompt >>> ")
             context_tokens = enc.encode(raw_text)
             generated = 0
             for _ in range(nsamples // batch_size):
@@ -83,10 +79,5 @@ def interact_model(
                 for i in range(batch_size):
                     generated += 1
                     text = enc.decode(out[i])
-                    print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    print(text)
-            print("=" * 80)
-
-if __name__ == '__main__':
-    fire.Fire(interact_model)
-
+                    text = text.replace("\n", " ")
+                    yield text.strip()
