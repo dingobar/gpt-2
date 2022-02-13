@@ -1,8 +1,14 @@
+Just for fun, I made this FastAPI that can serve random generated text given a prompt.
+
 Run the API with
-```python
+```sh
 docker-compose up --build
 ```
 
+Then call it (takes some time as it runs on CPU)
+```sh
+curl -X GET "http://localhost:8000/?prompt=whatever"
+```
 
 =================================
 
